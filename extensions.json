@@ -74,6 +74,20 @@
             "docs": false
         },
         {
+            "slug": "ShangCloud",
+            "id": "ShangCloud",
+            "name": "ShangCloud",
+            "description": "ShangCloud SDK for Scratch",
+            "image": "shangcloud.png",
+            "by": [
+                {
+                    "name": "Yearnstudio",
+                    "link": "https://yearn.studio"
+                }
+            ],
+            "docs": false
+        },
+        {
             "slug": "cybertoolbox",
             "id": "toolbox",
             "name": "Cybertoolbox",
