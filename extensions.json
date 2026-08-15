@@ -946,7 +946,29 @@
                 }
             ],
             "docs": false
-        }
+        },
+        {
+            "slug": "feishu",
+            "id": "feishu",
+            "name": "飞书",
+            "description": "✨更好的WebHook",
+            "nameTranslations": {
+                "zh-cn": "飞书",
+                "en": "FlyBook"
+            },
+            "descriptionTranslations": {
+                "zh-cn": "✨更好的WebHook",
+                "en": "✨Better WebHook"
+            },
+            "image": "FlyBook.png",
+            "by": [
+                {
+                    "name": "Maxkore",
+                    "link": "https://github.com/Maxkore-Geek/"
+                }
+            ],
+            "docs": false
+        },
     ]
 }
 
