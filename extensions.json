@@ -971,9 +971,9 @@
             "docs": false,
             "samples": [
                 "飞书示例"
-            ]
+            ],
+            "version": "1.0.0",
+            "license": "MIT"
         }
     ]
 }
-
-
