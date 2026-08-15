@@ -967,7 +967,7 @@
                     "link": "https://github.com/Maxkore-Geek/"
                 }
             ],
-            "scratchCompatible": true,
+            "scratchCompatible": false,
             "docs": false,
             "samples": [
                 "飞书示例"
