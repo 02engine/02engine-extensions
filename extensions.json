@@ -995,5 +995,25 @@
             ],
             "docs": false
         },
+        {
+            "slug": "更好的画板.",
+            "id": "更好的画板",
+            "name": "更好的画板",
+            "description": "更好的画板",
+            "nameTranslations": {
+                "zh-cn": "更好的画板"
+            },
+            "descriptionTranslations": {
+                "zh-cn": "更好的画板"
+            },
+            "image": "更好的画板.png",
+            "by": [
+                {
+                "name": "yuan",
+                "link": "https://www.ccw.site/student/687f6ba9fc898317568cdc8d"
+                }
+            ],
+            "docs": false
+        },
     ]
 }
