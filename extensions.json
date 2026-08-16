@@ -110,25 +110,6 @@
       "docs": false
     },
     {
-      "slug": "QwQAI大模型",
-      "id": "QwQAI大模型",
-      "name": "QwQAI大模型",
-      "description": "与通义千问的QwQ大模型及部分其他AI大模型交互。非官方扩展。",
-      "nameTranslations": {},
-      "descriptionTranslations": {},
-      "image": "QwQAI大模型.jpg",
-      "by": [
-        {
-          "name": "zekkei",
-          "link": "https://vlink.cc/zekkei"
-        }
-      ],
-      "docs": false,
-      "samples": [
-        "QwQAI大模型"
-      ]
-    },
-    {
       "slug": "小金鱼的屏蔽词",
       "id": "小金鱼的屏蔽词",
       "name": "小金鱼的屏蔽词",
