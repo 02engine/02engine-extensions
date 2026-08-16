@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>CCW 资产市场 | 动态命名全流包装终端</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        :root { --bg-color: #fafafa; --border-color: #e5e5e5; --primary: #000000; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg-color); color: #111; overflow-x: hidden; }
+        .card { border: 1px solid var(--border-color); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .input-box { border: 1px solid var(--border-color); padding: 9px; outline: none; width: 100%; }
+        .btn-black { background: var(--primary); color: white; padding: 10px 20px; cursor: pointer; transition: background 0.2s; }
+        .btn-black:hover { background: #333; }
+        
+        /* 结果展示浮层样式 */
+        #result-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+            justify-content: center; align-items: center;
+        }
+        #result-modal {
+            background: #fff;
+            width: 90%; max-width: 1000px; max-height: 85vh;
+            border-radius: 8px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        #modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .data-block {
+            background: #f4f4f4;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .data-label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .status-badge {
+            padding: 2px 8px; font-size: 10px; font-weight: bold; border-radius: 99px;
+        }
+        .status-success { background: #e6fffa; color: #00876c; border: 1px solid #b2f5ea; }
+        .status-fallback { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
+    </style>
+</head>
+<body class="p-10">
+
+<div class="max-w-7xl mx-auto">
+    <header class="mb-10 border-b-2 border-primary pb-5">
+        <h1 class="text-3xl font-bold tracking-tighter">资产市场精准请求终端</h1>
+        <p id="status-text" class="text-sm text-gray-500 mt-2">已优化：步骤三 name 属性现已自动同步适配为积木组名称。</p>
+    </header>
+
+    <section class="bg-white p-6 border border-gray-200 mb-10 flex gap-4 items-end flex-wrap shadow-sm rounded-sm">
+        <div class="flex-1 min-w-[200px]">
+            <label class="block text-xs font-bold uppercase mb-2">关键字</label>
+            <input type="text" id="keyword" class="input-box" placeholder="例如: 丝滑">
+        </div>
+        <div class="w-48">
+            <label class="block text-xs font-bold uppercase mb-2">排序方式</label>
+            <select id="sortField" class="input-box">
+                <option value="purchaseCount">最多添加</option>
+                <option value="likeCount">最多点赞</option>
+                <option value="donateCount">最多投币</option>
+                <option value="createdAt">最新发布</option>
+            </select>
+        </div>
+        <button onclick="performSearch()" class="btn-black text-sm font-bold">立即搜索</button>
+    </section>
+
+    <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+</div>
+
+<div id="result-overlay" onclick="closeModal(event)">
+    <div id="result-modal" onclick="event.stopPropagation()">
+        <header class="p-5 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+            <h2 class="text-xl font-bold tracking-tight" id="modal-title">资产处理数据管道</h2>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-3xl">&times;</button>
+        </header>
+        <div id="modal-body">
+            </div>
+        <footer class="p-4 border-t border-gray-200 bg-gray-50 flex justify-end">
+            <button onclick="closeModal()" class="btn-black text-sm">关闭并跳转</button>
+        </footer>
+    </div>
+</div>
+
+<script>
+    let currentUri = null;
+
+    // 1. 基础时间戳获取
+    async function getTimestamp() {
+        try {
+            const res = await fetch('https://community-web.ccw.site/base/dateTime');
+            const data = await res.json();
+            return data.body ? data.body.toString() : Date.now().toString();
+        } catch (e) {
+            console.error("时间戳获取失败", e);
+            return Date.now().toString();
+        }
+    }
+
+    // 2. 深度优先查找并提取 blockElements (数据流1)
+    function extractBlockElements(data) {
+        if (!data) return { data: data, fallback: true };
+        try {
+            function findKey(obj, key) {
+                if (obj && typeof obj === 'object') {
+                    if (obj.hasOwnProperty(key)) return obj[key];
+                    for (let k in obj) {
+                        let found = findKey(obj[k], key);
+                        if (found !== null && found !== undefined) return found;
+                    }
+                }
+                return null;
+            }
+            const result = findKey(data, 'blockElements');
+            if (result !== null && result !== undefined) {
+                return { data: result, fallback: false };
+            }
+            return { data: data, fallback: true };
+        } catch (e) {
+            return { data: data, fallback: true };
+        }
+    }
+
+    // 3. Scratch JSON 对象转数组 (数据流2)
+    function convertToBlockArray(blocksData) {
+        let blocks = blocksData.data;
+        if (!blocks || typeof blocks !== 'object') return { data: blocks, fallback: true };
+        
+        try {
+            let targetBlocks = blocks.hasOwnProperty('blockElements') ? blocks.blockElements : blocks;
+            if (targetBlocks && !Array.isArray(targetBlocks) && typeof targetBlocks === 'object') {
+                return { 
+                    data: Object.keys(targetBlocks).map(id => targetBlocks[id]), 
+                    fallback: false 
+                };
+            }
+            return { data: blocks, fallback: true }; 
+        } catch (e) {
+            return { data: blocks, fallback: true };
+        }
+    }
+
+    // 4. 强制执行：带有真实图片流转换与积木名称适配的字节包装器 (数据流3)
+    async function packToByteArrayStructure(finalData, assetId, assetName, imageUrl) {
+        function stringToByteArray(str) {
+            return Array.from(new TextEncoder().encode(str));
+        }
+
+        let thumbnailData = [];
+        let imgStatusLog = "";
+
+        // 异步获取图像字节流
+        if (imageUrl && imageUrl.startsWith('http')) {
+            try {
+                const imgRes = await fetch(imageUrl, { mode: 'cors' });
+                if (imgRes.ok) {
+                    const arrayBuffer = await imgRes.arrayBuffer();
+                    thumbnailData = Array.from(new Uint8Array(arrayBuffer));
+                    imgStatusLog = `成功抓取真实头图字节流，数据长度: ${thumbnailData.length} 字节。`;
+                } else {
+                    throw new Error(`图片状态码异常: ${imgRes.status}`);
+                }
+            } catch (e) {
+                thumbnailData = [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, 196, 137, 0, 0, 0, 10, 73, 68, 65, 84, 120, 156, 99, 0, 1, 0, 0, 5, 0, 1, 13, 10, 45, 180, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130];
+                imgStatusLog = `头图抓取受阻 (${e.message})。已触发静默图片降级，转为使用 1x1 透明像素。`;
+            }
+        } else {
+            thumbnailData = [137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, 196, 137, 0, 0, 0, 10, 73, 68, 65, 84, 120, 156, 99, 0, 1, 0, 0, 5, 0, 1, 13, 10, 45, 180, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130];
+            imgStatusLog = "无有效头图 URL，直接加载 1x1 透明像素占位符。";
+        }
+
+        try {
+            const jsonStr = typeof finalData === 'string' ? finalData : JSON.stringify(finalData);
+            const bodyData = stringToByteArray(jsonStr);
+            const bodyMD5 = CryptoJS.MD5(JSON.stringify(bodyData)).toString();
+            
+            const md5Log = `特征校验与环境日志:\n1. 核心体数据长度 (字节): ${bodyData.length}\n2. 生成体校验 MD5: ${bodyMD5}\n3. 积木组名称适配: "${assetName || '未命名积木'}"\n4. 头图处理状态: ${imgStatusLog}`;
+
+            return {
+                result: [{
+                    "type": "script",
+                    "mime": "application/json",
+                    "name": assetName || "code", // 【已适配】动态绑定为积木组真实名字，若不存在则降级为 code
+                    "bodyData": bodyData,
+                    "bodyMD5": bodyMD5,
+                    "thumbnailData": thumbnailData, 
+                    "id": assetId || "1001"
+                }],
+                log: md5Log,
+                imgFallback: imgStatusLog.includes("降级") || imgStatusLog.includes("占位")
+            };
+        } catch (e) {
+            console.error("包装异常:", e.message);
+            return {
+                result: [{ "type": "script", "mime": "application/json", "name": assetName || "code", "bodyData": [], "bodyMD5": "", "thumbnailData": [], "id": assetId || "1001" }],
+                log: "包装阶段遭遇致命异常",
+                imgFallback: true
+            };
+        }
+    }
+
+    // 辅助函数：打开模态框并填充数据
+    function showModal(id, title, sections) {
+        document.getElementById('modal-title').innerText = `${title} (ID: ${id})`;
+        const body = document.getElementById('modal-body');
+        body.innerHTML = ''; 
+
+        sections.forEach(sec => {
+            const labelHtml = `<div class="data-label">
+                ${sec.label}
+                ${sec.fallback !== undefined ? `<span class="status-badge ${sec.fallback ? 'status-fallback' : 'status-success'}">${sec.fallback ? '兜底/降级' : '正常'}</span>` : ''}
+            </div>`;
+            const blockHtml = `<div class="data-block">${sec.content}</div>`;
+            body.insertAdjacentHTML('beforeend', labelHtml + blockHtml);
+        });
+
+        document.getElementById('result-overlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeModal() {
+        document.getElementById('result-overlay').style.display = 'none';
+        document.body.style.overflow = 'auto'; 
+        if (currentUri) {
+            window.open(currentUri, '_blank');
+            currentUri = null; 
+        }
+    }
+
+    // 5. 点击“查看详情”时的核心处理逻辑
+    async function handleViewDetails(event, uri, assetId, assetName, imageUrl) {
+        event.preventDefault(); 
+        currentUri = uri; 
+        const statusText = document.getElementById('status-text');
+        statusText.innerText = `正在处理数据管道并抓取图像 [${assetId}]...`;
+
+        try {
+            const res = await fetch(uri);
+            if (!res.ok) throw new Error("读取远程资源失败");
+            let rawJson = await res.json();
+
+            // ================= 严格的不间断流数据管道 =================
+            // 步骤一：提取元素
+            let step1 = extractBlockElements(rawJson);
+            
+            // 步骤二：转换为数组
+            let step2 = convertToBlockArray(step1);
+
+            // 步骤三：【强制执行】进行最后的动态图像+积木名称包装
+            let step3 = await packToByteArrayStructure(step2.data, assetId, assetName, imageUrl);
+            // ========================================================
+
+            const modalSections = [
+                { label: "原始资源配置文件 (原始 JSON)", content: JSON.stringify(rawJson, null, 2), fallback: false },
+                { label: "步骤一：深度提取 blockElements", content: JSON.stringify(step1.data, null, 2), fallback: step1.fallback },
+                { label: "步骤二：转换为 ID 对象数组", content: JSON.stringify(step2.data, null, 2), fallback: step2.fallback },
+                { label: "步骤三：标准化字节流包装器 (已适配 name 及动态 thumbnailData)", content: JSON.stringify(step3.result, null, 2), fallback: step3.imgFallback },
+                { label: "全管道追踪日志", content: step3.log }
+            ];
+
+            showModal(assetId, assetName, modalSections);
+            statusText.innerText = `[${assetId}] 管道处理完毕。`;
+        } catch (err) {
+            console.warn(`严重阻断，放行进入源通道: ${err.message}`);
+            window.open(uri, '_blank');
+        } finally {
+            setTimeout(() => { 
+                statusText.innerText = `搜索终端就绪`; 
+            }, 1500);
+        }
+    }
+
+    // 6. 资产市场主搜索方法
+    async function performSearch() {
+        const grid = document.getElementById('grid');
+        const statusText = document.getElementById('status-text');
+        
+        statusText.innerText = "同步鉴权中...";
+        const timestamp = await getTimestamp();
+        
+        const payload = {
+            "page": 1,
+            "perPage": 80,
+            "tags": [],
+            "type": "THEME_PACK",
+            "keyword": document.getElementById('keyword').value,
+            "sortField": document.getElementById('sortField').value
+        };
+
+        grid.innerHTML = '<div class="col-span-full py-20 text-center">正在请求数据...</div>';
+
+        try {
+            const url = `https://community-web.ccw.site/asset_market/search?keyword=${encodeURIComponent(payload.keyword)}&page=${payload.page}&perPage=${payload.perPage}&sortField=${payload.sortField}&sortType=DESC&type=THEME_PACK`;
+            
+            const response = await fetch(url, {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Accept": "application/json, text/plain, */*",
+                    "Content-Type": "application/json",
+                    "a": "",
+                    "b": timestamp,
+                    "Guest-Id": "f3e2a62884f9e87510268f0432ce9488",
+                    "Referer": "https://assets.ccw.site/"
+                },
+                body: JSON.stringify(payload)
+            });
+            
+            const json = await response.json();
+            statusText.innerText = `搜索到 ${json.body.totalNum} 个结果 | 排序: ${payload.sortField}`;
+            
+            grid.innerHTML = json.body.data.map(item => {
+                const mainImg = item.previewImages[0] || '';
+                // 过滤掉积木名字中可能包含的单双引号，防止 HTML 属性解析中断
+                const safeName = item.name.replace(/['"]/g, "");
+                return `
+                <div class="card flex flex-col bg-white">
+                    <img src="${mainImg}" class="w-full h-40 object-cover bg-gray-100" onerror="this.src='https://placehold.co/400x200/eee/333?text=No+Img'">
+                    <div class="p-5 flex-grow">
+                        <h3 class="font-bold text-lg truncate">${item.name}</h3>
+                        <p class="text-xs text-gray-500 mt-1">作者: ${item.student?.name || '匿名'}</p>
+                        <div class="mt-4 flex gap-2 text-[10px] font-bold border-t pt-4">
+                            <span>添加:${item.stats.purchaseCount}</span>
+                            <span>赞:${item.stats.likeCount}</span>
+                            <span>投:${item.stats.donateCount}</span>
+                        </div>
+                    </div>
+                    <a href="${item.uri}" onclick="handleViewDetails(event, '${item.uri}', '${item.id}', '${safeName}', '${mainImg}')" class="block text-center py-3 bg-primary text-white text-xs uppercase font-bold tracking-widest hover:bg-gray-800 transition">查看详情</a>
+                </div>
+            `}).join('');
+            
+        } catch (err) {
+            statusText.innerText = "请求错误";
+            grid.innerHTML = `<div class="col-span-full py-20 text-center text-red-600">错误: ${err.message}</div>`;
+        }
+    }
+
+    performSearch();
+</script>
+</body>
+</html>
