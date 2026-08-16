@@ -165,28 +165,6 @@
       ]
     },
     {
-      "slug": "seacloud",
-      "id": "seacloud",
-      "name": "SeaCloud",
-      "description": "Account management tools used for SCOS on 02Engine, simplifying",
-      "nameTranslations": {
-        "zh-cn": "海云",
-        "en": "SeaCloud"
-      },
-      "descriptionTranslations": {
-        "zh-cn": "在02Engine上为SCOS使用的账户管理工具，化繁为简",
-        "en": "Account management tools used for SCOS on 02Engine, simplifying"
-      },
-      "image": "seacloud.png",
-      "by": [
-        {
-          "name": "Deep-Sea",
-          "link": "https://www.deep-sea.filegear-sg.me"
-        }
-      ],
-      "docs": true
-    },
-    {
       "slug": "补间 Plus",
       "id": "kmsTween",
       "name": "补间 Plus",
