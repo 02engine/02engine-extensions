@@ -974,6 +974,26 @@
             ],
             "version": "1.0.0",
             "license": "MIT"
-        }
+        },
+        {
+            "slug": "backgroundremoverpanel",
+            "id": "backgroundremoverpanel",
+            "name": "去背景",
+            "description": "去背景",
+            "nameTranslations": {
+                "zh-cn": "去背景"
+            },
+            "descriptionTranslations": {
+                "zh-cn": "去背景"
+            },
+            "image": "backgroundremoverpanel.png",
+            "by": [
+                {
+                "name": "yuan",
+                "link": "https://www.ccw.site/student/687f6ba9fc898317568cdc8d"
+                }
+            ],
+            "docs": false
+        },
     ]
 }
