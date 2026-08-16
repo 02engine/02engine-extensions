@@ -358,20 +358,6 @@
       "version": "2.1.0"
     },
     {
-      "slug": "更好的询问框",
-      "id": "更好的询问框",
-      "name": "更好的询问框",
-      "description": "一个更加美观的询问框",
-      "image": "更好的询问框.png",
-      "by": [
-        {
-          "name": "瓜子",
-          "link": "https://space.bilibili.com/3546667668212509?spm_id_from=333.337.0.0"
-        }
-      ],
-      "docs": false
-    },
-    {
       "slug": "wrapper.global",
       "id": "extensionWrapper",
       "name": "Extension Wrapper",
