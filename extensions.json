@@ -267,20 +267,6 @@
       "docs": false
     },
     {
-      "slug": "B小猫",
-      "id": "B小猫",
-      "name": "B小猫",
-      "description": "通过哔哩哔哩公开接口获取海量信息，喵(=・ω・=)~",
-      "image": "B小猫.png",
-      "by": [
-        {
-          "name": "10000why",
-          "link": "https://space.bilibili.com/541080936"
-        }
-      ],
-      "docs": true
-    },
-    {
       "slug": "更好的浏览器扩展",
       "id": "更好的浏览器扩展",
       "name": "更好的浏览器扩展",
