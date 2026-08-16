@@ -962,6 +962,33 @@
       ],
       "version": "1.0.0",
       "license": "MIT"
+    },
+    {
+      "slug": "deepsea",
+      "id": "deepsea",
+      "name": "TEST",
+      "description": "This is a test extension for 02extbot",
+      "image": "deepsea.png",
+      "by": [
+        {
+          "name": "深海",
+          "link": "https://deep-sea.cc.cd/"
+        }
+      ],
+      "docs": true,
+      "samples": [
+        "deepsea"
+      ],
+      "version": "0.0.1",
+      "license": "MIT",
+      "nameTranslations": {
+        "zh-cn": "测试",
+        "en": "TEST"
+      },
+      "descriptionTranslations": {
+        "zh-cn": "这是一个02extbot的测试扩展",
+        "en": "This is a test extension for 02extbot"
+      }
     }
   ]
 }
