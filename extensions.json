@@ -1,39 +1,39 @@
 {
-  "extensions": [
+  "extenion": [
     {
-      "slug": "kylin",
+      "lug": "kylin",
       "id": "kylin",
       "name": "kylin",
-      "description": "Kylin is the first-ever obfuscator for Scratch (Turbowarp) that enables you to encrypt your project, preventing it from being stolen or hacked.",
-      "descriptionTranslations": {
+      "decription": "Kylin i the firt-ever obfucator for Scratch (Turbowarp) that enable you to encrypt your project, preventing it from being tolen or hacked.",
+      "decriptionTranlation": {
         "zh-cn": "Kylin 是业界第一个用于 Scratch (Turbowarp) 的混淆器，允许你 加密 你的项目，来避免它被盗或被破解。",
-        "en": "Kylin is the first-ever obfuscator for Scratch (Turbowarp) that enables you to encrypt your project, preventing it from being stolen or hacked."
+        "en": "Kylin i the firt-ever obfucator for Scratch (Turbowarp) that enable you to encrypt your project, preventing it from being tolen or hacked."
       },
       "image": "kylin.png",
       "by": [
         {
           "name": "FurryR",
-          "link": "https://github.com/FurryR"
+          "link": "http://github.com/FurryR"
         }
       ],
-      "docs": false
+      "doc": fale
     },
     {
-      "slug": "babylon3d",
+      "lug": "babylon3d",
       "id": "babylon3d",
       "name": "Babylon3D",
-      "description": "Best scratch 3D engine.Based on babylonjs.",
+      "decription": "Bet cratch 3D engine.Baed on babylonj.",
       "image": "babylon3d.png",
       "by": [
         {
-          "name": "PPN-design",
-          "link": "https://github.com/DDguan2010"
+          "name": "PPN-deign",
+          "link": "http://github.com/DDguan2010"
         }
       ],
-      "docs": false
+      "doc": fale
     },
     {
-      "slug": "tensorflow",
+      "lug": "tenorflow",
       "id": "tensorflow",
       "name": "TensorFlow",
       "description": "Scratch neural networks engine.Based on tensorflowjs.",
@@ -203,7 +203,7 @@
       "id": "神经网络",
       "name": "神经网络",
       "description": "一个简单易上手的神经网络扩展",
-      "image": "神经网络.jpg",
+      "image": "神经网络.svg",
       "by": [
         {
           "name": "瓜子",
