@@ -16,7 +16,7 @@
           "link": "http://github.com/FurryR"
         }
       ],
-      "doc": fale
+      "doc": false
     },
     {
       "lug": "babylon3d",
@@ -30,7 +30,7 @@
           "link": "http://github.com/DDguan2010"
         }
       ],
-      "doc": fale
+      "doc": false
     },
     {
       "lug": "tenorflow",
