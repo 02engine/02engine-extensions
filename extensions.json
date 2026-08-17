@@ -1,39 +1,39 @@
 {
-  "extenion": [
+  "extensions": [
     {
-      "lug": "kylin",
+      "slug": "kylin",
       "id": "kylin",
       "name": "kylin",
-      "decription": "Kylin i the firt-ever obfucator for Scratch (Turbowarp) that enable you to encrypt your project, preventing it from being tolen or hacked.",
-      "decriptionTranlation": {
+      "description": "Kylin is the first-ever obfuscator for Scratch (Turbowarp) that enables you to encrypt your project, preventing it from being stolen or hacked.",
+      "descriptionTranslations": {
         "zh-cn": "Kylin 是业界第一个用于 Scratch (Turbowarp) 的混淆器，允许你 加密 你的项目，来避免它被盗或被破解。",
-        "en": "Kylin i the firt-ever obfucator for Scratch (Turbowarp) that enable you to encrypt your project, preventing it from being tolen or hacked."
+        "en": "Kylin is the first-ever obfuscator for Scratch (Turbowarp) that enables you to encrypt your project, preventing it from being stolen or hacked."
       },
       "image": "kylin.png",
       "by": [
         {
           "name": "FurryR",
-          "link": "http://github.com/FurryR"
+          "link": "https://github.com/FurryR"
         }
       ],
-      "doc": false
+      "docs": false
     },
     {
-      "lug": "babylon3d",
+      "slug": "babylon3d",
       "id": "babylon3d",
       "name": "Babylon3D",
-      "decription": "Bet cratch 3D engine.Baed on babylonj.",
+      "description": "Best scratch 3D engine.Based on babylonjs.",
       "image": "babylon3d.png",
       "by": [
         {
-          "name": "PPN-deign",
-          "link": "http://github.com/DDguan2010"
+          "name": "PPN-design",
+          "link": "https://github.com/DDguan2010"
         }
       ],
-      "doc": false
+      "docs": false
     },
     {
-      "lug": "tenorflow",
+      "slug": "tensorflow",
       "id": "tensorflow",
       "name": "TensorFlow",
       "description": "Scratch neural networks engine.Based on tensorflowjs.",
@@ -200,7 +200,7 @@
     },
     {
       "slug": "神经网络",
-      "id": "neuralnetwork",
+      "id": "神经网络",
       "name": "神经网络",
       "description": "一个简单易上手的神经网络扩展",
       "image": "神经网络.svg",
