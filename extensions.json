@@ -1002,20 +1002,6 @@
         }
       ],
       "docs": false
-    },
-    {
-      "slug": "test1",
-      "id": "test1",
-      "name": "test1",
-      "description": "test1test1test1",
-      "image": "test1.png",
-      "by": [
-        {
-          "name": "test777"
-        }
-      ],
-      "docs": false,
-      "version": "test1"
     }
   ]
 }
