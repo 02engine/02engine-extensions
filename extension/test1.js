@@ -1,1 +1,0 @@
-console.log("PPN是扫福瑞")
