@@ -1022,6 +1022,20 @@
       ],
       "docs": false,
       "version": "tes7"
+    },
+    {
+      "slug": "FeiShu",
+      "id": "feishu",
+      "name": "飞书",
+      "description": "Feishu",
+      "image": "FeiShu.png",
+      "by": [
+        {
+          "name": "Maxkore",
+          "link": "https://Maxkore.com/"
+        }
+      ],
+      "docs": false
     }
   ]
 }
