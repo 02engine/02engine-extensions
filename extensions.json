@@ -1002,6 +1002,28 @@
         }
       ],
       "docs": false
+    },
+    {
+      "slug": "pythonRunner",
+      "id": "pythonRunner",
+      "name": "Python 运行器",
+      "description": "Run Python code in Scratch using Pyodide. Supports code execution, expression evaluation, and output capture.",
+      "nameTranslations": {
+        "zh-cn": "Python 运行器",
+        "en": "Python Runner"
+      },
+      "descriptionTranslations": {
+        "zh-cn": "在 Scratch 中使用 Pyodide 运行 Python 代码。支持代码执行、表达式求值和输出捕获。",
+        "en": "Run Python code in Scratch using Pyodide. Supports code execution, expression evaluation, and output capture."
+      },
+      "image": "pythonRunner.svg",
+      "by": [
+        {
+          "name": "4uYS",
+          "link": "https://github.com/4uYS"
+        }
+      ],
+      "docs": false
     }
   ]
 }
